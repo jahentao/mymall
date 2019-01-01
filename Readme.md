@@ -19,12 +19,15 @@
 系统部分序列图如下所示。
 
 **用户登录**
+
 ![用户登录](readme.assets/sequence_user_login.png)
 
 **商品添加购物车**
+
 ![商品添加购物车](readme.assets/sequence_cart.png)
 
 **查看订单**
+
 ![查看订单](readme.assets/sequence_order.png)
 
 ### 架构图
@@ -38,7 +41,7 @@
 ### 克隆代码仓库
 
 ```bash
-git clone http://github.com/jahentao/e3-springboot.git
+git clone http://github.com/jahentao/mymall.git
 ```
 
 ### IDEA导入工程
@@ -67,7 +70,7 @@ git clone http://github.com/jahentao/e3-springboot.git
 
 系统每次提交完订单后，重启之前，确保删除`order`相关信息，执行[SQL](delete_order.sql)，否则可能出现`Duplicate entry`错误。
 
-注：具体参考[II. 项目配置](http://github.com/MrSorrow/e3-springboot#ii-项目配置)部分。
+注：具体参考[II. 项目配置](http://github.com/MrSorrow/mymall#ii-项目配置)部分。
 
 ### 修改配置文件
 
@@ -320,7 +323,7 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
    public class FastDFSTest {
        @Test
        public void testFastDfsClient() throws Exception {
-           FastDFSClient fastDFSClient = new FastDFSClient("F:\\Workspace\\GitHub\\e3-springboot\\mymall-manager\\mymall-manager-web\\src\\main\\resources\\conf\\fastdfs-client.conf");
+           FastDFSClient fastDFSClient = new FastDFSClient("F:\\Workspace\\GitHub\\mymall\\mymall-manager\\mymall-manager-web\\src\\main\\resources\\conf\\fastdfs-client.conf");
            String file = fastDFSClient.uploadFile("F:\\Pictures\\Screenpresso\\1.png");
            System.out.println(file);
        }
