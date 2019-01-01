@@ -1,0 +1,9 @@
+#tomcat conf
+server:
+  port: 8087
+#dubbo conf
+dubbo:
+  application:
+    name: mymall-order-web
+  registry:
+      address: zookeeper://192.168.237.100:2181

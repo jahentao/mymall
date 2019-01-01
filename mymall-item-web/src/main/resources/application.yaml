@@ -1,0 +1,20 @@
+#tomcat conf
+server:
+  port: 8084
+#dubbo conf
+dubbo:
+  application:
+    name: mymall-item-web
+  registry:
+      address: zookeeper://192.168.237.100:2181
+# activemq conf
+spring:
+  activemq:
+      user: admin
+      password: admin
+      broker-url: tcp://192.168.237.100:61616
+      pool:
+        enabled: true
+        max-connections: 50
+      packages:
+        trust-all: false

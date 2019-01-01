@@ -1,0 +1,39 @@
+mybatis:
+  config-location: classpath:mybatis/SqlMapConfig.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.237.100:3307/mymall
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    timeout: 5000
+# redis-single
+    host: 192.168.237.100
+    port: 6379
+# redis-cluster
+#    cluster:
+#      max-redirects: 3
+#      nodes:
+#      - 192.168.237.100:6380
+#      - 192.168.237.100:6381
+#      - 192.168.237.100:6382
+#    lettuce:
+#      pool:
+#        max-active: 100
+#        max-idle: 100
+#        min-idle: 50
+#        max-wait: 6000
+
+dubbo:
+  application:
+    name: mymall-content
+  registry:
+    address: zookeeper://192.168.237.100:2181
+  scan:
+    basePackages: cn.edu.zju.cst.sagroup.content.service
+  protocol:
+    port: 20881

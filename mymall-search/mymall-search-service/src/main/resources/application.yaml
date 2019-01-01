@@ -1,0 +1,33 @@
+mybatis:
+  config-location: classpath:mybatis/SqlMapConfig.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.237.100:3307/mymall
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    solr:
+      host: http://192.168.237.100:8983/solr/mymall
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://192.168.237.100:61616
+    pool:
+      enabled: true
+      max-connections: 50
+    packages:
+      trust-all: false
+
+dubbo:
+  application:
+    name: mymall-search
+  registry:
+    address: zookeeper://192.168.237.100:2181
+  scan:
+    basePackages: cn.edu.zju.cst.sagroup.search.service
+  protocol:
+    port: 20882
