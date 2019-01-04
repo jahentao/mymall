@@ -580,12 +580,13 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
   配置业务域，修改方法类似配置中文分词器；参考[managed-schema](配置/solr-single/managed-schema)文件
 
    ```xml
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="_id_" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <!-- docValues are enabled by default for long type so we don't need to index the version field  -->
    <field name="_version_" type="plong" indexed="false" stored="false"/>
    <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
    <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
    
+   <field name="id" type="plong" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="item_title" type="cn_text" indexed="true" stored="true"/>
    <field name="item_sell_point" type="cn_text" indexed="true" stored="true"/>
    <field name="item_price"  type="plong" indexed="true" stored="true"/>

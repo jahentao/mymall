@@ -1,14 +1,17 @@
 package cn.edu.zju.cst.sagroup.search.service.impl;
 
-import cn.edu.zju.cst.sagroup.search.service.SearchItemService;
-import com.alibaba.dubbo.config.annotation.Service;
 import cn.edu.zju.cst.sagroup.common.pojo.E3Result;
 import cn.edu.zju.cst.sagroup.common.pojo.SearchItem;
 import cn.edu.zju.cst.sagroup.search.mapper.SearchItemMapper;
+import cn.edu.zju.cst.sagroup.search.service.SearchItemService;
+import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,6 +26,7 @@ public class SearchItemServiceImpl implements SearchItemService {
 
     @Override
     public E3Result importItems() {
+        deleteAllItems();
         try {
             //查询商品列表
             List<SearchItem> itemList = itemMapper.getItemList();
@@ -48,6 +52,19 @@ public class SearchItemServiceImpl implements SearchItemService {
         } catch (Exception e) {
             e.printStackTrace();
             return E3Result.build(500, "商品导入失败");
+        }
+    }
+
+    /**
+     * 删除solr索引
+     */
+    private void deleteAllItems() {
+        try {
+            UpdateResponse rsp = solrClient.deleteByQuery("*:*");
+            solrClient.commit();
+            System.out.println("result:" + rsp.getStatus() + " Qtime:" + rsp.getQTime());
+        } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
         }
     }
 }
