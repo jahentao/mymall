@@ -7,4 +7,6 @@ public interface TbItemDescMapper {
     void insert(TbItemDesc tbItemDesc);
 
     TbItemDesc selectItemDescByPrimaryKey(Long itemId);
+
+    int delete(Long itemId);
 }

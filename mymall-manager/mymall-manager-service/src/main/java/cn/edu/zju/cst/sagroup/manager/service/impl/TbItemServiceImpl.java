@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.core.JmsMessagingTemplate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -124,6 +126,7 @@ public class TbItemServiceImpl implements TbItemService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public E3Result addItem(TbItem item, String desc) {
         // 1、生成商品id
         long itemId = IDUtils.genItemId();
@@ -150,5 +153,22 @@ public class TbItemServiceImpl implements TbItemService {
         jmsMessagingTemplate.convertAndSend(itemAddTopic, item.getId());
         // 8、E3Result.ok()
         return E3Result.ok();
+    }
+
+    /**
+     * 后台管理删除一个商品，同时删除商品和商品描述
+     *
+     * @param itemId 商品Id
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteItem(Long itemId) {
+        // 1. 在一个事务中，删除商品
+        int deleted = tbItemMapper.delete(itemId);
+        // 2. 同时删除商品描述
+        int descDeleted = tbItemDescMapper.delete(itemId);
+        if (deleted <= 0 && descDeleted <= 0) {
+            throw new RuntimeException("id:"+itemId+"的商品删除失败");
+        }
     }
 }

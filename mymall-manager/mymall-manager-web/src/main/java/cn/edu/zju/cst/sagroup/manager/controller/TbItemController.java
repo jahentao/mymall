@@ -38,4 +38,13 @@ public class TbItemController {
         return result;
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public E3Result deleteItem(long[] ids) {
+        for (long id : ids) {
+            tbItemService.deleteItem(id);
+        }
+        return E3Result.ok();
+    }
+
 }

@@ -33,7 +33,7 @@ public class GeneratePageMessageReceiver {
     @JmsListener(destination = "itemAddTopic", containerFactory = "jmsTopicListenerContainerFactory")
     public void itemAddReceiver(Long itemId) {
         try {
-            // 0、等待1s让e3-manager-service提交完事务，商品添加成功
+            // 0、等待1s让mymall-manager-service提交完事务，商品添加成功
             Thread.sleep(1000);
             // 1、准备商品数据
             TbItem tbItem = itemService.getItemById(itemId);

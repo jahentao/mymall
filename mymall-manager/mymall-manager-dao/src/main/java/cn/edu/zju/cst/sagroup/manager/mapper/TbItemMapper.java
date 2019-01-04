@@ -11,4 +11,6 @@ public interface TbItemMapper {
     List<TbItem> getItemList();
 
     void insert(TbItem item);
+
+    int delete(Long id);
 }

@@ -28,4 +28,7 @@
         (id, title, sell_point, price, num, barcode, image, cid, created, updated)
         VALUES (#{id}, #{title}, #{sellPoint}, #{price}, #{num}, #{barcode}, #{image}, #{cid}, #{created}, #{updated})
     </insert>
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM tb_item WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
 </mapper>
