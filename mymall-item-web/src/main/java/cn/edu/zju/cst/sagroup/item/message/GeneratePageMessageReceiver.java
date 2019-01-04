@@ -35,6 +35,7 @@ public class GeneratePageMessageReceiver {
 
     @JmsListener(destination = "itemAddTopic", containerFactory = "jmsTopicListenerContainerFactory")
     public void itemAddReceiver(Long itemId) {
+        FileWriter writer = null;
         try {
             // 0、等待1s让mymall-manager-service提交完事务，商品添加成功
             Thread.sleep(1000);
@@ -47,10 +48,18 @@ public class GeneratePageMessageReceiver {
             context.setVariable("item", item);
             context.setVariable("itemDesc", itemDesc);
             // 3、生成页面
-            FileWriter writer = new FileWriter(TEMPLATE_FILEPATH + itemId + ".html");
+            writer = new FileWriter(TEMPLATE_FILEPATH + itemId + ".html");
             springTemplateEngine.process(TEMPLATE_NAME, context, writer);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
+        } finally {
+            if (writer!=null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
