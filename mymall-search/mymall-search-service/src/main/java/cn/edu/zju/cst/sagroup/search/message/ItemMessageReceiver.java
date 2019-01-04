@@ -4,6 +4,7 @@ import cn.edu.zju.cst.sagroup.common.pojo.SearchItem;
 import cn.edu.zju.cst.sagroup.search.mapper.SearchItemMapper;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class ItemAddMessageReceiver {
+public class ItemMessageReceiver {
 
     @Autowired
     private SearchItemMapper searchItemMapper;
@@ -38,11 +39,21 @@ public class ItemAddMessageReceiver {
             // 5、向索引库中添加文档。
             solrClient.add(document);
             solrClient.commit();
-        } catch (SolrServerException e) {
+        } catch (SolrServerException | IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+    }
+
+    @JmsListener(destination = "itemDeleteTopic", containerFactory = "jmsTopicListenerContainerFactory")
+    public void itemDeleteReceiver(Long itemId) {
+        try {
+            // 0、等待1s让mymall-manager-service提交完事务，商品删除成功
+            Thread.sleep(1000);
+            // 1、删除Solr中对应商品索引
+            UpdateResponse rsp = solrClient.deleteByQuery("id:"+itemId);
+            // 2、提交
+            solrClient.commit();
+        } catch (InterruptedException | IOException | SolrServerException e) {
             e.printStackTrace();
         }
     }

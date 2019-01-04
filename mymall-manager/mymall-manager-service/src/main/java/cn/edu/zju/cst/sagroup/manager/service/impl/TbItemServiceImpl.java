@@ -170,5 +170,8 @@ public class TbItemServiceImpl implements TbItemService {
         if (deleted <= 0 && descDeleted <= 0) {
             throw new RuntimeException("id:"+itemId+"的商品删除失败");
         }
+        // 3、发送消息队列，通知新增商品id
+        ActiveMQTopic itemAddTopic = new ActiveMQTopic("itemDeleteTopic");
+        jmsMessagingTemplate.convertAndSend(itemAddTopic, itemId);
     }
 }

@@ -5,6 +5,9 @@ import cn.edu.zju.cst.sagroup.item.pojo.Item;
 import cn.edu.zju.cst.sagroup.manager.service.TbItemService;
 import cn.edu.zju.cst.sagroup.pojo.TbItem;
 import cn.edu.zju.cst.sagroup.pojo.TbItemDesc;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
@@ -46,9 +49,7 @@ public class GeneratePageMessageReceiver {
             // 3、生成页面
             FileWriter writer = new FileWriter(TEMPLATE_FILEPATH + itemId + ".html");
             springTemplateEngine.process(TEMPLATE_NAME, context, writer);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
