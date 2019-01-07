@@ -18,7 +18,11 @@ public class SearchController {
     private Integer PAGE_ROWS;
 
     @RequestMapping({"/search.html","/"})
-    public String search(String keyword, @RequestParam(defaultValue = "1") Integer page, Model model) throws Exception {
+    public String search(String keyword,
+                         @RequestParam(defaultValue = "1") Integer page,
+                         Model model) throws Exception {
+        //检查redis是否缓存了静态页面
+
         //调用Service查询商品信息
         SearchResult result = searchService.search(keyword, page, PAGE_ROWS);
         //把结果传递给jsp页面
@@ -27,6 +31,8 @@ public class SearchController {
         model.addAttribute("recourdCount", result.getRecourdCount());
         model.addAttribute("page", page);
         model.addAttribute("itemList", result.getItemList());
+        //将静态页面返回到redis
+
         //返回逻辑视图
         return "search";
     }

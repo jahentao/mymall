@@ -2,6 +2,12 @@
 server:
   port: 8083
 #dubbo conf
+spring:
+  redis:
+      timeout: 5000
+  # redis-single
+      host: 127.0.0.1
+      port: 6379
 dubbo:
   application:
     name: mymall-search-web
