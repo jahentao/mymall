@@ -6,4 +6,4 @@ dubbo:
   application:
     name: mymall-search-web
   registry:
-      address: zookeeper://aliservice.maoyiwei.top:2181
+      address: zookeeper://192.168.237.100:2181
