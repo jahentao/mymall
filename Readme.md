@@ -100,11 +100,11 @@ git clone http://github.com/jahentao/mymall.git
    | cn.edu.zju.cst.sagroup.cart.CartServiceApplicationStarter       | 购物车   |
    | cn.edu.zju.cst.sagroup.order.OrderServiceApplicationStarter     | 订单     |
 
-3. Windows宿主机启动Nginx。替换Nginx配置文件[nginx.conf](配置/nginx/nginx.conf)
+3. Windows宿主机启动Nginx。替换Nginx配置文件[nginx.conf](configure/nginx/nginx.conf)
 
-    修改宿主机hosts。添加`mymall.com`等域名，详见[hosts](配置/hosts)
+    修改宿主机hosts。添加`mymall.com`等域名，详见[hosts](configure/hosts)
     
-    解压[静态资源](配置/mymall-static/mymall-static.rar)和[上传的图片](配置/mymall-upload/mymall-upload.rar)分别至上文`nginx.conf`配置server的路径下。
+    解压[静态资源](configure/mymall-static/mymall-static.rar)和[上传的图片](configure/mymall-upload/mymall-upload.rar)分别至上文`nginx.conf`配置server的路径下。
     
     启动nginx。
     
@@ -283,7 +283,7 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
    docker run -d --name mymall-fastdfs-storage --net=host -e TRACKER_IP=192.168.237.100:22122 -e GROUP_NAME=group1 morunchang/fastdfs sh storage.sh
    ```
 
-5. 修改nginx的配置，[配置参考](配置/fastdfs/nginx.conf),不拦截上传内容；
+5. 修改nginx的配置，[配置参考](configure/fastdfs/nginx.conf),不拦截上传内容；
 
    ```bash
    # 1. 进入容器
@@ -440,13 +440,13 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
 
    - 定位Solr7自带的中文分词器 *smartcn* 的jar包位置 `ls /opt/solr/contrib/analysis-extras/lucene-libs`；
 
-   - 进入创建的 *solrcore: mymall* 配置目录 `/opt/solr/server/solr/mymall/conf`也就是拷贝出来的`/usr/local/solr/server/solr/mymall/conf`目录下 ，修改 `solrconfig.xml` ，参考[solrconfig.xml](配置/solr-single/solrconfig.xml)文件，添加 *smartcn* 包的 `lib` 标签；
+   - 进入创建的 *solrcore: mymall* 配置目录 `/opt/solr/server/solr/mymall/conf`也就是拷贝出来的`/usr/local/solr/server/solr/mymall/conf`目录下 ，修改 `solrconfig.xml` ，参考[solrconfig.xml](configure/solr-single/solrconfig.xml)文件，添加 *smartcn* 包的 `lib` 标签；
       ```bash
       vi /usr/local/solr/server/solr/mymall/conf/solrconfig.xml
       ```
      ![修改路径添加jar包](readme.assets/1533956354821.png)
 
-   - 在 `managed-schema` 中添加中文分词的 FieldType，参考[managed-schema](配置/solr-single/managed-schema)文件 ；
+   - 在 `managed-schema` 中添加中文分词的 FieldType，参考[managed-schema](configure/solr-single/managed-schema)文件 ；
        ```bash
        vi /usr/local/solr/server/solr/mymall/conf/managed-schema
        ```
@@ -577,7 +577,7 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
 
 ### 搜索服务
 
-  配置业务域，修改方法类似配置中文分词器；参考[managed-schema](配置/solr-single/managed-schema)文件
+  配置业务域，修改方法类似配置中文分词器；参考[managed-schema](configure/solr-single/managed-schema)文件
 
    ```xml
    <field name="_id_" type="string" indexed="true" stored="true" required="true" multiValued="false" />

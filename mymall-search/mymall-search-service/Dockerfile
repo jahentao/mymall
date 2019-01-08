@@ -1,3 +1,13 @@
 FROM java:8-alpine
 ADD target/mymall-search-service.jar mymall-search-service.jar
-ENTRYPOINT ["java", "-jar", "/mymall-search-service.jar"]
+EXPOSE 20882
+ENV JAVA_OPTS=""
+ENV MYSQL_HOST=192.168.237.100
+ENV MYSQL_PORT=3307
+ENV MYSQL_DATABASE=mymall
+ENV MYSQL_PASSWORD=123456
+ENV ACTIVEMQ_HOST=192.168.237.100
+ENV ZOOKEEPER_HOST=192.168.237.100
+ENV SOLR_HOST=192.168.237.100
+ENV SOLR_CORE=mymall
+ENTRYPOINT ["java", "$JAVA_OPTS", "-jar", "/mymall-search-service.jar"]

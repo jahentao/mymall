@@ -1,8 +1,10 @@
+docker rmi $(docker images | grep "none" | awk '{print $3}')
+
 # 1. mymall-dubbo-admin
 cd mymall-dubbo-admin
 mvn package -Dmaven.test.skip=true
 docker build -t jahentao/mymall-dubbo-admin:1 -f Dockerfile .
-# docker run --name mymall-test-dubbo-admin -p 7001:7001 -d jahentao/mymall-dubbo-admin:1
+# docker run --name mymall-app-dubbo-admin -p 7001:7001 -d jahentao/mymall-dubbo-admin:1
 # docker rm -f mymall-test-dubbo-admin
 # docker image rm jahentao/mymall-dubbo-admin:1
 cd ..

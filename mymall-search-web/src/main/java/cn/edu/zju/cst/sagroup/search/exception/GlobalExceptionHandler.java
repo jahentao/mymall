@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
 
         // 保存至log
-        logger.error("e3-search系统发生错误", e);
+        logger.error("mymall-search系统发生错误", e);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("exception", e);

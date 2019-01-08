@@ -4,21 +4,21 @@ mybatis:
 
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://192.168.237.100:3307/mymall
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:123456}
+    url: jdbc:mysql://${MYSQL_HOST:192.168.237.100}:${MYSQL_PORT:3307}/${MYSQL_DATABASE:mymall}
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
   redis:
       timeout: 5000
-      host: 192.168.237.100
-      port: 6379
+      host: ${REDIS_HOST:192.168.237.100}
+      port: ${REDIS_PORT:6379}
 
   activemq:
-        user: admin
-        password: admin
-        broker-url: tcp://192.168.237.100:61616
+        user: ${ACTIVEMQ_USER:admin}
+        password: ${ACTIVEMQ_USER_PASSWORD:admin}
+        broker-url: tcp://${ACTIVEMQ_HOST:192.168.237.100}:${ACTIVEMQ_PORT:61616}
         pool:
           enabled: true
           max-connections: 50
@@ -29,8 +29,8 @@ dubbo:
   application:
     name: mymall-manager
   registry:
-    address: zookeeper://192.168.237.100:2181
+    address: zookeeper://${ZOOKEEPER_HOST:192.168.237.100}:${ZOOKEEPER_PORT:2181}
   scan:
     basePackages: cn.edu.zju.cst.sagroup.manager.service
   protocol:
-    port: 20880
+    port: ${MYMALL_MANAGER_SERVICE_PORT:20880}
