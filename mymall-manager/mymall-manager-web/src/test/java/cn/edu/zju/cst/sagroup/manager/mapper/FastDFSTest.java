@@ -12,7 +12,7 @@ public class FastDFSTest {
 
     @Test
     public void testFastDfsClient() throws Exception {
-        FastDFSClient fastDFSClient = new FastDFSClient("F:\\Workspace\\GitHub\\e3-springboot\\mymall-manager\\mymall-manager-web\\src\\main\\resources\\conf\\fastdfs-client.conf");
+        FastDFSClient fastDFSClient = new FastDFSClient("F:\\Workspace\\idea\\mymall\\mymall-manager\\mymall-manager-web\\src\\main\\resources\\conf\\fastdfs-client.conf");
         String file = fastDFSClient.uploadFile("H:\\jahentao\\Pictures\\分类\\背景\\秒速五厘米 星空 情侣.jpg");
         System.out.println(file);
     }

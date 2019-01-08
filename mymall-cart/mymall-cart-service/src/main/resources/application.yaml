@@ -4,23 +4,23 @@ mybatis:
 
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://192.168.237.100:3307/mymall
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:123456}
+    url: jdbc:mysql://${MYSQL_HOST:192.168.237.100}:${MYSQL_PORT:3307}/${MYSQL_DATABASE:mymall}
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   redis:
     timeout: 5000
 # redis-single
-    host: 192.168.237.100
-    port: 6379
+    host: ${REDIS_HOST:192.168.237.100}
+    port: ${REDIS_PORT:6379}
 
 dubbo:
   application:
     name: mymall-cart
   registry:
-    address: zookeeper://192.168.237.100:2181
+    address: zookeeper://${ZOOKEEPER_HOST:192.168.237.100}:${ZOOKEEPER_PORT:2181}
   scan:
     basePackages: cn.edu.zju.cst.sagroup.cart.service
   protocol:
-    port: 20884
+    port: ${MYMALL_CART_SERVICE_PORT:20884}

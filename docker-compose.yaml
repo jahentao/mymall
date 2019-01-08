@@ -1,0 +1,284 @@
+version: '3'
+services:
+  # 基础环境
+  nginx:
+    container_name: mymall-nginx
+    build:
+      context: ./mymall-nginx
+    image: jahentao/mymall-nginx:1
+    ports:
+      - "80:80"
+    extra_hosts:
+      - "MY_HOST:${MY_HOST}"
+      - "dubbo-admin.mymall.com:${MY_HOST}"
+      - "manage.mymall.com:${MY_HOST}"
+      - "item.mymall.com:${MY_HOST}"
+      - "mymall.com:${MY_HOST}"
+      - "www.mymall.com:${MY_HOST}"
+      - "image.mymall.com:${MY_HOST}"
+      - "static.mymall.com:${MY_HOST}"
+      - "sso.mymall.com:${MY_HOST}"
+      - "order.mymall.com:${MY_HOST}"
+      - "solr.mymall.com:${MY_HOST}"
+      - "search.mymall.com:${MY_HOST}"
+      - "cart.mymall.com:${MY_HOST}"
+  zookeeper:
+    container_name: mymall-zookeeper
+    image: zookeeper:3.4.13
+    ports:
+      - "2181:2181"
+  redis:
+    container_name: mymall-redis
+    image: redis:3.2
+    ports:
+      - "6379:6379"
+  db:
+    container_name: mymall-mysql
+    build:
+      context: ./mymall-mysql
+    image: jahentao/mymall-mysql:1
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: mymall
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Shanghai
+  solr:
+    container_name: mymall-solr
+    build:
+      context: ./mymall-solr
+    image: jahentao/mymall-solr:1
+    ports:
+      - "8983:8983"
+  activemq:
+    container_name: mymall-activemq
+    image: webcenter/activemq:5.14.3
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+#   搞不定，fastdfs以docker-compose启动，配置哪里不对，上传文件用不了
+#  fastdfs-tracker:
+#    container_name: mymall-fastdfs-tracker
+#    image: morunchang/fastdfs
+#    command: sh tracker.sh
+#    ports:
+#      - "22122:22122"
+#      - "8080:8080"
+#  fastdfs-storage:
+#    container_name: mymall-fastdfs-storage
+#    build:
+#      context: ./mymall-fastdfs-storage
+#    image: mymall-fastdfs-storage:1
+#    environment:
+#      # IP 需要修改
+#      TRACKER_IP: ${MY_HOST}:22122
+#      GROUP_NAME: group1
+#    command: sh storage.sh
+#    ports:
+#      - "23000:23000"
+#      这个端口要修改，暂时不要用文件下载
+#      - "80:80"
+
+
+  # 应用服务，依赖基础环境
+  manager-service:
+    container_name: mymall-manager-service
+    image: jahentao/mymall-manager-service:1
+    ports:
+      - "20880:20880"
+    depends_on:
+      - db
+      - redis
+      - activemq
+      - zookeeper
+    environment:
+      # 主要列出一些，在实际部署环境中可能需要替换的变量
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - REDIS_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+      - ACTIVEMQ_HOST=${MY_HOST}
+  content-service:
+    container_name: mymall-content-service
+    image: jahentao/mymall-content-service:1
+    ports:
+      - "20881:20881"
+    depends_on:
+      - db
+      - redis
+      - zookeeper
+    environment:
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - REDIS_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+  search-service:
+    container_name: mymall-search-service
+    image: jahentao/mymall-search-service:1
+    ports:
+      - "20882:20882"
+    depends_on:
+      - db
+      - solr
+      - activemq
+      - zookeeper
+    environment:
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - ACTIVEMQ_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+      - SOLR_HOST=${MY_HOST}
+      - SOLR_CORE=mymall
+  sso-service:
+    container_name: mymall-sso-service
+    image: jahentao/mymall-sso-service:1
+    ports:
+      - "20883:20883"
+    depends_on:
+      - db
+      - redis
+      - zookeeper
+    environment:
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - REDIS_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+  cart-service:
+    container_name: mymall-cart-service
+    image: jahentao/mymall-cart-service:1
+    ports:
+      - "20884:20884"
+    depends_on:
+      - db
+      - redis
+      - zookeeper
+    environment:
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - REDIS_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+  order-service:
+    container_name: mymall-order-service
+    image: jahentao/mymall-order-service:1
+    ports:
+      - "20885:20885"
+    depends_on:
+      - db
+      - redis
+      - zookeeper
+    environment:
+      - MYSQL_HOST=${MY_HOST}
+      - MYSQL_PORT=3307
+      - MYSQL_DATABASE=mymall
+      - MYSQL_PASSWORD=123456
+      - REDIS_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+
+  # Dubbo监控
+  dubbo-admin:
+    container_name: mymall-app-dubbo-admin
+    image: jahentao/mymall-dubbo-admin:1
+    ports:
+      - "7001:7001"
+    depends_on:
+      - zookeeper
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+
+  # Web应用
+  manager-web:
+    container_name: mymall-app-manager-web
+    image: jahentao/mymall-manager-web:1
+    ports:
+      - "8081:8081"
+    depends_on:
+      - zookeeper
+      - content-service
+      - manager-service
+      - search-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+  portal-web:
+    container_name: mymall-app-portal-web
+    image: jahentao/mymall-portal-web:1
+    ports:
+      - "8082:8082"
+    depends_on:
+      - zookeeper
+      - content-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+  search-web:
+    container_name: mymall-app-search-web
+    image: jahentao/mymall-search-web:1
+    ports:
+      - "8083:8083"
+    depends_on:
+      - zookeeper
+      - search-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+  item-web:
+    container_name: mymall-app-item-web
+    image: jahentao/mymall-item-web:1
+    ports:
+      - "8084:8084"
+    depends_on:
+      - zookeeper
+      - activemq
+      - manager-service
+    environment:
+      - ACTIVEMQ_HOST=${MY_HOST}
+      - ZOOKEEPER_HOST=${MY_HOST}
+  sso-web:
+    container_name: mymall-app-sso-web
+    image: jahentao/mymall-sso-web:1
+    ports:
+      - "8085:8085"
+    depends_on:
+      - zookeeper
+      - sso-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+  cart-web:
+    container_name: mymall-app-cart-web
+    image: jahentao/mymall-cart-web:1
+    ports:
+      - "8086:8086"
+    depends_on:
+      - zookeeper
+      - cart-service
+      - manager-service
+      - sso-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+  order-web:
+    container_name: mymall-app-order-web
+    image: jahentao/mymall-order-web:1
+    ports:
+      - "8087:8087"
+    depends_on:
+      - zookeeper
+      - cart-service
+      - order-service
+      - sso-service
+    environment:
+      - ZOOKEEPER_HOST=${MY_HOST}
+
+#networks:
+#  frontend:
+#  backend:
+#
+#volumes:
+#  db-data:s
