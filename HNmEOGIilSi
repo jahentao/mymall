@@ -1,0 +1,142 @@
+[33mcommit 540c303dc80400c3f739c3972fc7e99c580a96d7[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: WillSmisi <764947976@qq.com>
+Date:   Wed Jan 9 20:11:33 2019 +0800
+
+    add lvs-nginx
+
+[33mcommit 32eb9398e9051157fa51b2b31752c311c20b5859[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: maoyiwei <jsmyw95@qq.com>
+Date:   Wed Jan 9 12:30:25 2019 +0800
+
+    update zookeeper
+
+[33mcommit 551a53f132187db5cbd0990c678383bb64b0e635[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Wed Jan 9 10:33:23 2019 +0800
+
+    tar.gz
+
+[33mcommit a37a801c7cffe15b43e524f6ee8e1397726cd334[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Wed Jan 9 10:32:17 2019 +0800
+
+    tar.gz
+
+[33mcommit 07c6fca9d92a9cf3a02b3b826614b22c9a94d8fb[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Wed Jan 9 09:51:43 2019 +0800
+
+    修改部署文档
+
+[33mcommit 5a6f1dd1a8b18cb986cb96b7159e5b0c0b401208[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Wed Jan 9 09:41:41 2019 +0800
+
+    应用容器化
+
+[33mcommit 28d9128aca042a40c8efe9ad68de406c7e12d771[m
+Merge: 233dc95 a120512
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 8 09:09:34 2019 +0800
+
+    Merge branch 'develop'
+
+[33mcommit a12051203ff8484b3a5bafbdce071bbdc9719969[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 8 09:09:09 2019 +0800
+
+    编写compose文件服务、应用单节点部署
+
+[33mcommit 233dc955fb5a75f3b9fd21602f790d1cea71e280[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 8 01:53:01 2019 +0800
+
+    fix，商品详情页缓存测试通过
+
+[33mcommit 6f9a69bfac400ff4b5619483615f130b07ecbe6c[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 8 01:21:57 2019 +0800
+
+    Merge 商品详情页Redis缓存，调整项目结构
+
+[33mcommit 8e9a2607b786f2fd7a2f554fb11aa5e8d4574404[m
+Merge: e10dc18 b0ab737
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 8 00:30:11 2019 +0800
+
+    Merge branch 'master' of https://github.com/jahentao/mymall into develop
+
+[33mcommit b0ab7370498dda5fac821f0f9215287b3745f4f7[m
+Author: maoyiwei <jsmyw95@qq.com>
+Date:   Sun Jan 6 20:44:48 2019 +0800
+
+    添加redis搜索结果静态化
+    
+    Signed-off-by: maoyiwei <jsmyw95@qq.com>
+
+[33mcommit e10dc18b4760ebcb4a306c33f0187e7788735d59[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Sun Jan 6 18:54:50 2019 +0800
+
+    更改"配置"文件夹名为"configure"
+
+[33mcommit 9336a36f5ed64fe981fdc8f55b855d9f22d7ce05[m
+Merge: a7ad3ad aa655cc
+Author: maoyiwei <jsmyw95@qq.com>
+Date:   Sun Jan 6 17:21:56 2019 +0800
+
+    Merge branch 'master' of github.com:jahentao/mymall
+
+[33mcommit aa655ccaf48bd256a49c7197907b84765ee675bd[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Sun Jan 6 15:36:01 2019 +0800
+
+    修复solr配置文件更改后代码中未更新的bug
+
+[33mcommit a7ad3ad896952910999f613b5035027a14c26dfb[m
+Author: maoyiwei <jsmyw95@qq.com>
+Date:   Sun Jan 6 13:18:05 2019 +0800
+
+    copy search web redis
+
+[33mcommit 150888bb1036c9b1b41bcacee08a3fca21c75682[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Sat Jan 5 22:03:59 2019 +0800
+
+    构建Docker镜像
+
+[33mcommit abf07d5d2b7859ffda071b1245d8d37b4c8bfb92[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Fri Jan 4 17:39:29 2019 +0800
+
+    更新商品详情页页面模板，更新mymall-static静态资源
+
+[33mcommit cb68790fdedd183c77c6f2fbd73429aa5ce0e7f6[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Fri Jan 4 17:14:47 2019 +0800
+
+    消息中间件添加itemDeleteTopic主题，后台商品删除，搜索系统删除商品索引
+
+[33mcommit 2344fd05c4bba74464d53f35a1ac380c67ac70d4[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Fri Jan 4 16:25:00 2019 +0800
+
+    fix 文档的bug
+
+[33mcommit 9d0f349d750e29188ceb8270999ce742d9e70670[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Fri Jan 4 13:45:27 2019 +0800
+
+    后台管理>商品管理>查询商品>删除 功能添加
+
+[33mcommit 17c85b30be47b41ef4f0d6e00008970cd067d003[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 1 16:08:44 2019 +0800
+
+    document
+
+[33mcommit e2815b98e58fd7e8f83b6274fbf0baf25e705ea1[m
+Author: jahentao <tzhltjh@163.com>
+Date:   Tue Jan 1 15:36:18 2019 +0800
+
+    project setup
