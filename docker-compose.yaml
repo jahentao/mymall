@@ -20,11 +20,36 @@ services:
       - "solr.mymall.com:${MYHOST}"
       - "search.mymall.com:${MYHOST}"
       - "cart.mymall.com:${MYHOST}"
+  # 3个zookeeper构成的集群
   zookeeper:
-    container_name: mymall-zookeeper
-    image: zookeeper:3.4.13
+    image: zookeeper
+    restart: always
+    hostname: zookeeper
     ports:
-      - "2181:2181"
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zookeeper2:2888:3888 server.3=zookeeper3:2888:3888
+  zookeeper2:
+    image: zookeeper
+    restart: always
+    hostname: zookeeper2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zookeeper3:2888:3888
+  zookeeper3:
+    image: zookeeper
+    restart: always
+    hostname: zookeeper3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=zookeeper2:2888:3888 server.3=0.0.0.0:2888:3888
+  
+  
   redis:
     container_name: mymall-redis
     image: redis:3.2
