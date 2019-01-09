@@ -674,3 +674,8 @@ Dubbo需要使用Zookeeper对分布式服务进行协调。
    利用 Redis 生成订单号；
    创建订单，保存至数据库。
 
+### Nginx破坏性测试
+
+  演示效果，我们在这里将利用Test Nginx image,将Nginx的镜像的Docker ID显示到前台页面
+####  Demo图如下:
+  ![DemoTest](readme.assets/demoTest3.gif)
