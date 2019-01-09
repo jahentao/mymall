@@ -24,25 +24,24 @@ export MYHOST=192.168.237.201
 docker-compose config
 ```
 
-3. **先启动应用服务**
+3. **启动**
 
-不要直接运行`docker-compose up`，先启动应用服务
-```bash
-docker-compose start manager-service content-service search-service sso-service cart-service order-service
-```
+直接运行`docker-compose up`
+
 确定服务启动再启动，以`docker logs mymall-manager-service`为例，要看到`is await...`
 ```bash
 INFO 6 --- [pool-1-thread-1] .d.c.e.AwaitingNonWebApplicationListener :  [Dubbo] Current Spring Boot Application is await...
 ```
 
-4. **再启动Web应用**
-
-```bash
-docker-compose start manager-web portal-web search-web item-web sso-web cart-web order-web
-```
-确定服务启动再启动，以`docker logs mymall-manager-service`为例，要看到`is await...`
-
 确定服务启动再启动，以`docker logs mymall-app-manager-web`为例，要看到`JVM running for`
 ```bash
 INFO 6 --- [           main] z.c.s.m.ManagerServiceApplicationStarter : Started ManagerServiceApplicationStarter in 198.686 seconds (JVM running for 221.44)
+```
+
+如果应用Web启动失败，500错误，执行以下命令，重启Web应用。此时依赖的服务确保是启动了的。
+
+```bash
+docker-compose stop manager-web portal-web search-web item-web sso-web cart-web order-web
+
+docker-compose stop manager-web portal-web search-web item-web sso-web cart-web order-web
 ```
