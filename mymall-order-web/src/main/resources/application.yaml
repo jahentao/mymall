@@ -1,9 +1,9 @@
 #tomcat conf
 server:
-  port: ${SERVER_PORT:8087}
+  port: 8087
 #dubbo conf
 dubbo:
   application:
     name: mymall-order-web
   registry:
-      address: zookeeper://${ZOOKEEPER_HOST:192.168.237.100}:${ZOOKEEPER_PORT:2181}
+      address: zookeeper://zookeeper:2181

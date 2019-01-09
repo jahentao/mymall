@@ -3,25 +3,23 @@ services:
   # 基础环境
   nginx:
     container_name: mymall-nginx
-    build:
-      context: ./mymall-nginx
     image: jahentao/mymall-nginx:1
     ports:
       - "80:80"
     extra_hosts:
-      - "MY_HOST:${MY_HOST}"
-      - "dubbo-admin.mymall.com:${MY_HOST}"
-      - "manage.mymall.com:${MY_HOST}"
-      - "item.mymall.com:${MY_HOST}"
-      - "mymall.com:${MY_HOST}"
-      - "www.mymall.com:${MY_HOST}"
-      - "image.mymall.com:${MY_HOST}"
-      - "static.mymall.com:${MY_HOST}"
-      - "sso.mymall.com:${MY_HOST}"
-      - "order.mymall.com:${MY_HOST}"
-      - "solr.mymall.com:${MY_HOST}"
-      - "search.mymall.com:${MY_HOST}"
-      - "cart.mymall.com:${MY_HOST}"
+      - "MYHOST:${MYHOST}"
+      - "dubbo-admin.mymall.com:${MYHOST}"
+      - "manage.mymall.com:${MYHOST}"
+      - "item.mymall.com:${MYHOST}"
+      - "mymall.com:${MYHOST}"
+      - "www.mymall.com:${MYHOST}"
+      - "image.mymall.com:${MYHOST}"
+      - "static.mymall.com:${MYHOST}"
+      - "sso.mymall.com:${MYHOST}"
+      - "order.mymall.com:${MYHOST}"
+      - "solr.mymall.com:${MYHOST}"
+      - "search.mymall.com:${MYHOST}"
+      - "cart.mymall.com:${MYHOST}"
   zookeeper:
     container_name: mymall-zookeeper
     image: zookeeper:3.4.13
@@ -34,11 +32,9 @@ services:
       - "6379:6379"
   db:
     container_name: mymall-mysql
-    build:
-      context: ./mymall-mysql
     image: jahentao/mymall-mysql:1
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: mymall
       MYSQL_ROOT_PASSWORD: 123456
@@ -46,8 +42,6 @@ services:
       TZ: Asia/Shanghai
   solr:
     container_name: mymall-solr
-    build:
-      context: ./mymall-solr
     image: jahentao/mymall-solr:1
     ports:
       - "8983:8983"
@@ -72,7 +66,7 @@ services:
 #    image: mymall-fastdfs-storage:1
 #    environment:
 #      # IP 需要修改
-#      TRACKER_IP: ${MY_HOST}:22122
+#      TRACKER_IP: fastdfs-tracker:22122
 #      GROUP_NAME: group1
 #    command: sh storage.sh
 #    ports:
@@ -82,6 +76,8 @@ services:
 
 
   # 应用服务，依赖基础环境
+  #  docker-compose stop manager-service content-service search-service sso-service cart-service order-service
+  #  docker-compose start manager-service content-service search-service sso-service cart-service order-service
   manager-service:
     container_name: mymall-manager-service
     image: jahentao/mymall-manager-service:1
@@ -92,15 +88,11 @@ services:
       - redis
       - activemq
       - zookeeper
-    environment:
-      # 主要列出一些，在实际部署环境中可能需要替换的变量
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - REDIS_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
-      - ACTIVEMQ_HOST=${MY_HOST}
+    links:
+      - zookeeper
+      - activemq
+      - redis
+      - db:mysql
   content-service:
     container_name: mymall-content-service
     image: jahentao/mymall-content-service:1
@@ -110,13 +102,10 @@ services:
       - db
       - redis
       - zookeeper
-    environment:
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - REDIS_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - db:mysql
+      - redis
+      - zookeeper
   search-service:
     container_name: mymall-search-service
     image: jahentao/mymall-search-service:1
@@ -127,15 +116,11 @@ services:
       - solr
       - activemq
       - zookeeper
-    environment:
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - ACTIVEMQ_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
-      - SOLR_HOST=${MY_HOST}
-      - SOLR_CORE=mymall
+    links:
+      - db:mysql
+      - activemq
+      - zookeeper
+      - solr
   sso-service:
     container_name: mymall-sso-service
     image: jahentao/mymall-sso-service:1
@@ -145,13 +130,10 @@ services:
       - db
       - redis
       - zookeeper
-    environment:
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - REDIS_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - db:mysql
+      - redis
+      - zookeeper
   cart-service:
     container_name: mymall-cart-service
     image: jahentao/mymall-cart-service:1
@@ -161,13 +143,10 @@ services:
       - db
       - redis
       - zookeeper
-    environment:
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - REDIS_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - db:mysql
+      - redis
+      - zookeeper
   order-service:
     container_name: mymall-order-service
     image: jahentao/mymall-order-service:1
@@ -177,13 +156,10 @@ services:
       - db
       - redis
       - zookeeper
-    environment:
-      - MYSQL_HOST=${MY_HOST}
-      - MYSQL_PORT=3307
-      - MYSQL_DATABASE=mymall
-      - MYSQL_PASSWORD=123456
-      - REDIS_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - db:mysql
+      - redis
+      - zookeeper
 
   # Dubbo监控
   dubbo-admin:
@@ -193,10 +169,12 @@ services:
       - "7001:7001"
     depends_on:
       - zookeeper
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
 
   # Web应用
+  #  docker-compose stop manager-web portal-web search-web item-web sso-web cart-web order-web
+  #  docker-compose start manager-web portal-web search-web item-web sso-web cart-web order-web
   manager-web:
     container_name: mymall-app-manager-web
     image: jahentao/mymall-manager-web:1
@@ -207,8 +185,8 @@ services:
       - content-service
       - manager-service
       - search-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
   portal-web:
     container_name: mymall-app-portal-web
     image: jahentao/mymall-portal-web:1
@@ -217,8 +195,8 @@ services:
     depends_on:
       - zookeeper
       - content-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
   search-web:
     container_name: mymall-app-search-web
     image: jahentao/mymall-search-web:1
@@ -226,9 +204,10 @@ services:
       - "8083:8083"
     depends_on:
       - zookeeper
+      - redis
       - search-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
   item-web:
     container_name: mymall-app-item-web
     image: jahentao/mymall-item-web:1
@@ -238,9 +217,9 @@ services:
       - zookeeper
       - activemq
       - manager-service
-    environment:
-      - ACTIVEMQ_HOST=${MY_HOST}
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - activemq
+      - zookeeper
   sso-web:
     container_name: mymall-app-sso-web
     image: jahentao/mymall-sso-web:1
@@ -249,8 +228,8 @@ services:
     depends_on:
       - zookeeper
       - sso-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
   cart-web:
     container_name: mymall-app-cart-web
     image: jahentao/mymall-cart-web:1
@@ -261,8 +240,8 @@ services:
       - cart-service
       - manager-service
       - sso-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
   order-web:
     container_name: mymall-app-order-web
     image: jahentao/mymall-order-web:1
@@ -273,8 +252,8 @@ services:
       - cart-service
       - order-service
       - sso-service
-    environment:
-      - ZOOKEEPER_HOST=${MY_HOST}
+    links:
+      - zookeeper
 
 #networks:
 #  frontend:

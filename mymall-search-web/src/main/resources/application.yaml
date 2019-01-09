@@ -5,11 +5,11 @@ spring:
   redis:
     timeout: 5000
     # redis-single
-    host: 192.168.237.100
+    host: redis
     port: 6379
 #dubbo conf
 dubbo:
   application:
     name: mymall-search-web
   registry:
-      address: zookeeper://192.168.237.100:2181
+      address: zookeeper://zookeeper:2181

@@ -3,7 +3,7 @@ dubbo:
   application:
     name: mymall-manager-web
   registry:
-      address: zookeeper://${ZOOKEEPER_HOST:192.168.237.100}:${ZOOKEEPER_PORT:2181}
+      address: zookeeper://zookeeper:2181
 #picture upload conf
 spring:
   servlet:
@@ -13,4 +13,4 @@ spring:
       max-request-size: 10MB
 #tomcat conf
 server:
-  port: ${SERVER_PORT:8081}
+  port: 8081

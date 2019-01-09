@@ -1,4 +1,19 @@
-docker rmi $(docker images | grep "none" | awk '{print $3}')
+
+# 1. mymall-solr
+cd mymall-solr
+docker build -t jahentao/mymall-solr:1 -f Dockerfile .
+cd ..
+
+# 2. mymall-mysql
+cd mymall-mysql
+docker build -t jahentao/mymall-mysql:1 -f Dockerfile .
+cd ..
+
+# 3. mymall-nginx
+cd mymall-nginx
+docker build -t jahentao/mymall-nginx:1 -f Dockerfile .
+cd ..
+#--------------------------
 
 # 1. mymall-dubbo-admin
 cd mymall-dubbo-admin

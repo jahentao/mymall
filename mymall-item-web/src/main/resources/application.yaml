@@ -1,18 +1,18 @@
 #tomcat conf
 server:
-  port: ${SERVER_PORT:8084}
+  port: 8084
 #dubbo conf
 dubbo:
   application:
     name: mymall-item-web
   registry:
-      address: zookeeper://${ZOOKEEPER_HOST:192.168.237.100}:${ZOOKEEPER_PORT:2181}
+      address: zookeeper://zookeeper:2181
 # activemq conf
 spring:
   activemq:
-      user: ${ACTIVEMQ_USER:admin}
-      password: ${ACTIVEMQ_USER_PASSWORD:admin}
-      broker-url: tcp://${ACTIVEMQ_HOST:192.168.237.100}:${ACTIVEMQ_PORT:61616}
+      user: admin
+      password: admin
+      broker-url: tcp://activemq:61616
       pool:
         enabled: true
         max-connections: 50
